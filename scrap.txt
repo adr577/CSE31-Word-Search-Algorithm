@@ -1,0 +1,250 @@
+    int len = strlen(word);
+    int found = 0;
+
+    for (int i = 0; i < bSize; i++)
+    {
+        for (int j = 0; j < bSize; j++)
+        {
+            char curr = *(*(arr + i) + j);
+            char firstChar = *word;
+            //conver to lower case
+            if(curr >= 'A' && curr <= 'Z') {
+                curr += 32;
+            }
+            if(firstChar >= 'A' && firstChar <= 'Z'){
+                firstChar += 32;
+            }
+
+            if (curr == firstChar)
+            {
+                // horizontally
+                if (j + len <= bSize)
+                {
+                    int k;
+                    for (k = 1; k < len; k++)
+                    {
+                        char nextChar = *(word + k);
+                        char nextGridChar = *(*(arr + i) + j + k);
+
+                        //convert to lower case if needed
+
+                        if(nextGridChar >= 'A' && nextGridChar <= 'Z'){
+                            nextGridChar += 32;
+                        }
+                        if (nextChar >= 'A' && nextChar <= 'Z')
+                        {
+                            nextChar += 32;
+                        }
+                        if (nextGridChar != nextChar)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (k == len)
+                    {
+                        found = 1;
+                        printf("Word found!\n");
+                        printf("Printing search path: \n");
+                        for (k = 0; k < len; k++)
+                        {
+                            printf("%d %d\n", i, j + k);
+                        }
+                        printf("\n");
+                    }
+                }
+
+                // vertically
+
+                if (!found && i + len <= bSize)
+                {
+                    int k;
+                    for (k = 1; k < len; k++)
+                    {
+                        char nextChar = *(word + k);
+                        char nextGridChar = *(*(arr + i + k) + j);
+                        // Convert both characters to lowercase if needed
+                        if (nextGridChar >= 'A' && nextGridChar <= 'Z')
+                        {
+                            nextGridChar += 32;
+                        }
+                        if (nextChar >= 'A' && nextChar <= 'Z')
+                        {
+                            nextChar += 32;
+                        }
+                        if (nextGridChar != nextChar)
+                        {
+                            break;
+                        }
+                    }
+                    if (k == len)
+                    {
+                        found = 1;
+                        printf("Word found!\n");
+                        printf("Printing the search path:\n");
+                        for (k = 0; k < len; k++)
+                        {
+                            printf("%d %d\n", i + k, j);
+                        }
+                        printf("\n");
+                    }
+                }
+                // check diagnolly downwards to the right
+
+                if (!found && i + len <= bSize && j + len <= bSize)
+                {
+                    int k;
+                    for (k = 1; k < len; k++)
+                    {
+                        char nextChar = *(word + k);
+                        char nextGridChar = *(*(arr + i + k) + j + k);
+                        // Convert both characters to lowercase if needed
+                        if (nextGridChar >= 'A' && nextGridChar <= 'Z')
+                        {
+                            nextGridChar += 32;
+                        }
+                        if (nextChar >= 'A' && nextChar <= 'Z')
+                        {
+                            nextChar += 32;
+                        }
+                        if (nextGridChar != nextChar)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (k == len)
+                    {
+                        found = 1;
+                        printf("Word found!\n");
+                        printf("Printing the search path:\n");
+                        for (k = 0; k < len; k++)
+                        {
+                            printf("%d %d\n", i + k, j + k);
+                        }
+                        printf("\n");
+                    }
+                }
+
+                // check diagnolly down to the left
+
+                if (!found && i + len <= bSize && j - len + 1 >= 0)
+                {
+                    int k;
+                    for (k = 1; k < len; k++)
+                    {
+                        char nextChar = *(word + k);
+                        char nextGridChar = *(*(arr + i + k) + j - k);
+                        // Convert both characters to lowercase if needed
+                        if (nextGridChar >= 'A' && nextGridChar <= 'Z')
+                        {
+                            nextGridChar += 32;
+                        }
+                        if (nextChar >= 'A' && nextChar <= 'Z')
+                        {
+                            nextChar += 32;
+                        }
+                        if (nextGridChar != nextChar)
+                        {
+                            break;
+                        }
+                    }
+                    if (k == len)
+                    {
+                        found = 1;
+                        printf("Word found!\n");
+                        printf("Printing the search path:\n");
+                        for (k = 0; k < len; k++)
+                        {
+                            printf("%d %d\n", i + k, j - k);
+                        }
+                        printf("\n");
+                    }
+                }
+            }
+        }
+    }
+
+        if (!found){
+          printf("Word not found.\n");
+        }
+
+
+
+
+
+
+
+2
+
+
+
+
+void searchPuzzle(char** arr, char* word){
+    // This function checks if arr contains the search word. If the 
+    // word appears in arr, it will print out a message and the path 
+    // as shown in the sample runs. If not found, it will print a 
+    // different message as shown in the sample runs.
+    // Your implementation here...
+    int found, wordLen, i, j, k, l;
+    char w;
+    wordLen = strlen(word);
+    
+    //searching horizontally
+    for (i = 0; i < bSize;i++){
+        for (j = 0; j < bSize - wordLen;j++){
+            found = 1;
+            for (k = 0; k < wordLen;k++){
+                w = *(*(arr + i) + j + k);
+                if(w >= 'A' && w<= 'Z'){
+                    w = w - 'A' + 'a'; //lowercase conversion
+                }
+                if(w != *(word + k)) {
+                    found = 0;
+                    break;
+                }
+            } 
+            if(found){
+                printf("Word found!\n");
+                printf("Path: ");
+                for (l = 0; l < wordLen; l++){
+                    printf("(%d,%d) ", i + 1, j + l + 1);
+                }
+                printf("\n");
+                return;
+            }
+        }
+
+    }
+    
+    //verticle
+
+    for (j = 0; j < bSize; j++){
+        for (i = 0; i <= bSize - wordLen;i++){
+            found = 1;
+            for (k = 0; k < wordLen; k++){
+                w = *(*(arr + i + k) + j);
+                if (w >= 'A' && w <= 'Z')
+                {
+                    w = w - 'A' + 'a'; // lowercase conversion
+                }
+                if (w != *(word + k))
+                {
+                    found = 0;
+                    break;
+                }
+            }
+            if(found){
+                    printf("Word found!\n");
+                    printf("Path: ");
+                    for (l = 0; l < wordLen; l++)
+                    {
+                        printf("(%d,%d) ", i + l + 1, j +1);
+                    }
+                    printf("\n");
+                    return;
+            }
+        }
+    }
+    printf("Word not found.\n");
+}
